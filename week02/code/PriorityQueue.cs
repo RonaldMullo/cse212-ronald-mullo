@@ -15,25 +15,39 @@
         _queue.Add(newNode);
     }
 
-    public string Dequeue()
+    
+public string Dequeue()
+{
+    // Step 1: Check if the queue is empty.
+    if (_queue.Count == 0)
     {
-        if (_queue.Count == 0) // Verify the queue is not empty
-        {
-            throw new InvalidOperationException("The queue is empty.");
-        }
-
-        // Find the index of the item with the highest priority to remove
-        var highPriorityIndex = 0;
-        for (int index = 1; index < _queue.Count - 1; index++)
-        {
-            if (_queue[index].Priority >= _queue[highPriorityIndex].Priority)
-                highPriorityIndex = index;
-        }
-
-        // Remove and return the item with the highest priority
-        var value = _queue[highPriorityIndex].Value;
-        return value;
+        throw new InvalidOperationException("The queue is empty.");
     }
+
+    // Step 2: Assume the first item has the highest priority.
+    int highPriorityIndex = 0;
+
+    // Step 3: Search through all remaining items.
+    for (int index = 1; index < _queue.Count; index++)
+    {
+        // Step 4: Update only when a higher priority is found.
+        // Using > preserves FIFO order for equal priorities.
+        if (_queue[index].Priority > _queue[highPriorityIndex].Priority)
+        {
+            highPriorityIndex = index;
+        }
+    }
+
+    // Step 5: Save the value of the highest-priority item.
+    string value = _queue[highPriorityIndex].Value;
+
+    // Step 6: Remove the selected item from the queue.
+    _queue.RemoveAt(highPriorityIndex);
+
+    // Step 7: Return the selected value.
+    return value;
+}
+
 
     // DO NOT MODIFY THE CODE IN THIS METHOD
     // The graders rely on this method to check if you fixed all the bugs, so changes to it will cause you to lose points.
